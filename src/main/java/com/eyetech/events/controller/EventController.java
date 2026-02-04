@@ -2,6 +2,7 @@ package com.eyetech.events.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,5 +41,12 @@ public class EventController {
         @RequestParam(defaultValue = "10") int size
     ) {
         return eventService.listEvents(page, size);
+    }
+
+    public Page<EventResponseDTO> listUpComingEvents(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ){
+        return eventService.listUpComingEvents(page, size);
     }
 }

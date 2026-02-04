@@ -1,6 +1,7 @@
 package com.eyetech.events.services;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -99,5 +101,22 @@ public class EventService {
                     event.getEventUrl()
                 ))
                 .toList();
+    }
+
+    public Page<EventResponseDTO> listUpComingEvents(int page, int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("date").ascending());
+
+        Date today = Date.valueOf(LocalDate.now());
+
+        return eventRepository.findByDateGreaterThanEqual(today, pageable).map(
+            event -> new EventResponseDTO(
+                event.getId(),
+                event.getTitle(),
+                event.getDescription(),
+                event.getDate(),
+                event.getRemote(),
+                event.getEventUrl(),
+                event.getImgUrl()
+            ));
     }
 }
