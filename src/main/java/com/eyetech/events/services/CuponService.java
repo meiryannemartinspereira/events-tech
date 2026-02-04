@@ -1,5 +1,7 @@
 package com.eyetech.events.services;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ public class CuponService {
     private EventRepository eventRepository;
 
     public Cupon addCuponToEvent(Long eventId, CuponRequestDTO cuponDto) {
+
+        Objects.requireNonNull(eventId, "Event id must not be null");
 
         Event event = eventRepository.findById(eventId)
             .orElseThrow(() -> new IllegalArgumentException("Event not found"));
